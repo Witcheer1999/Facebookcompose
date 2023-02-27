@@ -2,12 +2,15 @@ package com.example.facebookcompose
 
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.TableRow
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Tab
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
@@ -23,11 +26,14 @@ import com.example.facebookcompose.ui.theme.BGray
 import com.example.facebookcompose.ui.theme.BrandBlue
 import com.example.facebookcompose.ui.theme.FacebookComposeTheme
 import androidx.compose.material.TabRow
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.text.input.ImeAction
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -41,7 +47,15 @@ fun HomeScreen() {
         Column() {
             TopAppBar()
             TabBar()
-            StatusUpdateBar()
+            StatusUpdateBar(
+                avatarUrl = "\"https://www.collephoto.com/wp-content/uploads/2023/02/tuscany242_websize-683x1024.jpg\"",
+                onTextChange = {
+
+                },
+                onSendClick = {
+
+                }
+            )
         }
     }
 }
@@ -87,8 +101,8 @@ private fun TopAppBar() {
 }
 
 data class TabItem(
-    val icon : ImageVector,
-    val contentDescription : String,
+    val icon: ImageVector,
+    val contentDescription: String,
 )
 
 @Composable
@@ -103,14 +117,14 @@ private fun TabBar() {
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             val tabs = listOf(
-                TabItem(Icons.Rounded.Home,stringResource(R.string.home)),
+                TabItem(Icons.Rounded.Home, stringResource(R.string.home)),
                 TabItem(Icons.Rounded.Tv, stringResource(R.string.reels)),
                 TabItem(Icons.Rounded.Store, stringResource(R.string.store)),
                 TabItem(Icons.Rounded.Newspaper, stringResource(R.string.newspaper)),
                 TabItem(Icons.Rounded.Notifications, stringResource(R.string.notification)),
                 TabItem(Icons.Rounded.Menu, stringResource(R.string.menu)),
 
-            )
+                )
 
             tabs.forEachIndexed { i, item ->
                 Tab(
@@ -127,21 +141,56 @@ private fun TabBar() {
 }
 
 @Composable
-private fun StatusUpdateBar() {
-    val avatarUrl : String = ""
+private fun StatusUpdateBar(
+    onTextChange: (String) -> Unit,
+    avatarUrl: String,
+    onSendClick: () -> Unit,
+) {
     Surface() {
         Column() {
-            Row(Modifier.fillMaxWidth()){
-                AsyncImage(model = ImageRequest.Builder(
-                    LocalContext.current
-                ).data(avatarUrl)
-                    .crossfade(true)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .build(),
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(
+                        LocalContext.current
+                    ).data(avatarUrl)
+                        .crossfade(true)
+                        .placeholder(R.drawable.ic_placeholder)
+                        .build(),
                     contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                )
+                //Spacer(modifier = Modifier.width(8.dp))
+                var text by remember {
+                    mutableStateOf("")
+                }
+                TextField(
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    value = text,
+                    onValueChange = {
+                        text = it
+                            onTextChange(it)
+                    },
+                    placeholder = { Text(stringResource(R.string.OnYourMind)) },
+                    keyboardActions = KeyboardActions(
+                        onSend = {
+                            onSendClick()
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Send
+                    )
                 )
             }
         }
