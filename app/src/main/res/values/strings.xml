@@ -53,4 +53,7 @@
     <string name="notification">notification</string>
     <string name="menu">menu</string>
     <string name="OnYourMind">What\'s on your mind?</string>
+    <string name="live">live</string>
+    <string name="album">album</string>
+    <string name="message">discuss</string>
 </resources>

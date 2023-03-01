@@ -2,6 +2,7 @@ package com.example.facebookcompose
 
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TableRow
 import androidx.activity.ComponentActivity
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Tab
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
@@ -25,20 +26,29 @@ import androidx.compose.ui.unit.dp
 import com.example.facebookcompose.ui.theme.BGray
 import com.example.facebookcompose.ui.theme.BrandBlue
 import com.example.facebookcompose.ui.theme.FacebookComposeTheme
-import androidx.compose.material.TabRow
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.input.ImeAction
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import androidx.compose.material3.Button as Button
 
 @Composable
 fun HomeScreen() {
+    val viewModel = viewModel<HomeScreenViewModel> ()
     Box(
         Modifier
             .background(Color.Gray)
@@ -147,7 +157,7 @@ private fun StatusUpdateBar(
     onSendClick: () -> Unit,
 ) {
     Surface() {
-        Column() {
+        Column {
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -180,7 +190,7 @@ private fun StatusUpdateBar(
                     value = text,
                     onValueChange = {
                         text = it
-                            onTextChange(it)
+                        onTextChange(it)
                     },
                     placeholder = { Text(stringResource(R.string.OnYourMind)) },
                     keyboardActions = KeyboardActions(
@@ -192,6 +202,52 @@ private fun StatusUpdateBar(
                         imeAction = ImeAction.Send
                     )
                 )
+            }
+            Divider()
+            Row(Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.width(3.dp))
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(Color.Transparent)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.VideoCall,
+                        contentDescription = stringResource(R.string.live),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(stringResource(R.string.live), color = Color.Black)
+                }
+                Spacer(modifier = Modifier.width(3.dp))
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(Color.Transparent)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.PhotoAlbum,
+                        contentDescription = stringResource(R.string.album),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(stringResource(R.string.album), color = Color.Black)
+                }
+                Spacer(modifier = Modifier.width(3.dp))
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(Color.Transparent)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Message,
+                        contentDescription = stringResource(R.string.message),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(stringResource(R.string.message), color = Color.Black)
+                }
+                Spacer(modifier = Modifier.width(3.dp))
             }
         }
     }
